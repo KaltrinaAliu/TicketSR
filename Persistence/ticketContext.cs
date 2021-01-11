@@ -10,6 +10,8 @@ namespace Persistence
         }
         public DbSet<Value> Values { get; set; }
         public DbSet<Company> Companies  { get; set; }
+        public DbSet<TicketType> TicketTypes  { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder){
             builder.Entity<Value>()
