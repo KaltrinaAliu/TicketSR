@@ -1,6 +1,8 @@
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Errors;
 using FluentValidation;
 using MediatR;
 using Persistence;
@@ -36,7 +38,7 @@ namespace Application.TicketTypes
             {
                 var ticketType = await _context.TicketTypes.FindAsync(request.Id);
                 if(ticketType==null)
-                    throw new Exception("Could not find company");
+                       throw new RestException(HttpStatusCode.NotFound,new {ticketType="Could not find"});
                     
                 ticketType.Name=request.Name??ticketType.Name;
                 ticketType.CreatedDate=ticketType.CreatedDate;

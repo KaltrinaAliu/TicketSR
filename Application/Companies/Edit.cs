@@ -1,6 +1,8 @@
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Errors;
 using FluentValidation;
 using MediatR;
 using Persistence;
@@ -40,7 +42,7 @@ namespace Application.Companies
             {
                 var company = await _context.Companies.FindAsync(request.Id);
                 if(company==null)
-                    throw new Exception("Could not find company");
+                       throw new RestException(HttpStatusCode.NotFound,new {company="Could not find"});
                     
                 company.Name=request.Name??company.Name;
                 company.Description=request.Description??company.Description;
