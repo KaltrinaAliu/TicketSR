@@ -17,7 +17,7 @@ namespace API.Controllers
 
         public ValuesController(ticketContext context)
         {
-            this._context = context;
+           _context = context;
         }
 
         // GET api/values

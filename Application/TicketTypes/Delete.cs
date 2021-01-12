@@ -25,7 +25,7 @@ namespace Application.TicketTypes
                     {
                        var ticketType=await _context.TicketTypes.FindAsync(request.Id);
                        if(ticketType==null)
-                       throw new Exception("Could not find company");
+                       throw new Exception("Could not find type");
 
                         _context.Remove(ticketType);
 

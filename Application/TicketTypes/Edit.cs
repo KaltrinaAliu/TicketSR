@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
 using MediatR;
 using Persistence;
 
@@ -23,6 +24,13 @@ namespace Application.TicketTypes
             {
                 _context = context;
         
+            }
+            public class CommandValidator : AbstractValidator<Command>
+            {
+                public CommandValidator()
+                {
+                    RuleFor(x=>x.Name).NotEmpty();
+                }
             }
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {

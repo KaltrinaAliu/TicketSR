@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading;
 using System.Threading.Tasks;
 using Domain;
+using FluentValidation;
 using MediatR;
 using Persistence;
 
@@ -15,7 +16,6 @@ namespace Application.Companies
         {
             [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
             public Guid Id { get; set; }
-            [Required]
             public string Name { get; set; }
             public string Description { get; set; }
             public bool IsActive { get; set; }
@@ -23,6 +23,15 @@ namespace Application.Companies
             public DateTime UpdatedDate { get; set; }
         }
 
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x=>x.Name).NotEmpty();
+                RuleFor(x=>x.IsActive).NotEmpty();
+
+            }
+        }
         public class Handler : IRequestHandler<Command>
         {
             private readonly ticketContext _context;
