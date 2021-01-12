@@ -1,9 +1,10 @@
 using Domain;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence
 {
-    public class ticketContext: DbContext
+    public class ticketContext: IdentityDbContext<AppUser>
     {
         public ticketContext(DbContextOptions options):base(options)
         {
@@ -14,6 +15,7 @@ namespace Persistence
 
 
         protected override void OnModelCreating(ModelBuilder builder){
+            base.OnModelCreating(builder);
             builder.Entity<Value>()
             .HasData(
                 new Value{Id=1, Name="103"},
