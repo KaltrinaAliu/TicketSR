@@ -12,6 +12,13 @@ using Microsoft.OpenApi.Models;
 using Persistence;
 using Domain;
 using Microsoft.AspNetCore.Identity;
+using Application.Interfaces;
+using Infrastructure.Security;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace API
 {
@@ -29,7 +36,10 @@ namespace API
             services.AddDbContext<ticketContext>(opt=>{
                 opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
-            services.AddControllers().AddFluentValidation(
+            services.AddControllers(opt=>{
+                var policy= new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                opt.Filters.Add(new AuthorizeFilter(policy));
+            }).AddFluentValidation(
                 cfg=>{
                     cfg.RegisterValidatorsFromAssemblyContaining<Create>();
                 }
@@ -48,8 +58,20 @@ namespace API
             var identityBuilder=new IdentityBuilder(builder.UserType, builder.Services);
             identityBuilder.AddEntityFrameworkStores<ticketContext>();
             identityBuilder.AddSignInManager<SignInManager<AppUser>>();
+            services.AddScoped<IJwtGenerator,JwtGenerator>();
+            services.AddScoped<IUserAccessor,UserAccessor>();
 
-            services.AddAuthentication();
+            var key=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"]));
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(Opt=>
+            {
+                Opt.TokenValidationParameters=new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey=true,
+                    IssuerSigningKey=key,
+                    ValidateAudience=false,
+                    ValidateIssuer=false
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,9 +86,11 @@ namespace API
             }
 
             //app.UseHttpsRedirection();
-            app.UseCors("CorsPolicy");
+            
             app.UseRouting();
+            app.UseCors("CorsPolicy");
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>{
