@@ -11,10 +11,10 @@ namespace Application.Companies
 {
     public class Details
     {
-          public class Query : IRequest<Company> 
-          { 
-              public Guid Id {get; set;}
-          }
+        public class Query : IRequest<Company>
+        {
+            public Guid Id { get; set; }
+        }
 
         public class Handler : IRequestHandler<Query, Company>
         {
@@ -26,9 +26,9 @@ namespace Application.Companies
             }
             public async Task<Company> Handle(Query request, CancellationToken cancellationToken)
             {
-                var company= await _context.Companies.FindAsync(request.Id);
-                 if(company==null)
-                       throw new RestException(HttpStatusCode.NotFound,new {company="Could not find"});
+                var company = await _context.Companies.FindAsync(request.Id);
+                if (company == null)
+                    throw new RestException(HttpStatusCode.NotFound, new { company = "Could not find" });
                 return company;
             }
         }

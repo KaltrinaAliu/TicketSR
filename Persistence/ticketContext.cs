@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Persistence
 {
-    public class ticketContext: IdentityDbContext<AppUser>
+    public class ticketContext: IdentityDbContext<AppUser, AppRole, string>
     {
         public ticketContext(DbContextOptions options):base(options)
         {

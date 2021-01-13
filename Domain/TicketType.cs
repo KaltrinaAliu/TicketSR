@@ -8,5 +8,7 @@ namespace Domain
         public string Name { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
+        public Guid CompanyId { get; set; }
+        public virtual Company Company { get; set; }
     }
 }

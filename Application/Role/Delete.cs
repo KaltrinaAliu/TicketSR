@@ -6,13 +6,13 @@ using Application.Errors;
 using MediatR;
 using Persistence;
 
-namespace Application.Companies
+namespace Application.Role
 {
     public class Delete
     {
         public class Command : IRequest
         {
-            public Guid Id { get; set; }
+            public string Id { get; set; }
         }
 
         public class Handler : IRequestHandler<Command>
@@ -25,11 +25,11 @@ namespace Application.Companies
             }
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                var company = await _context.Companies.FindAsync(request.Id);
-                if (company == null)
-                    throw new RestException(HttpStatusCode.NotFound, new { company = "Could not find" });
+                var role = await _context.Roles.FindAsync(request.Id);
+                if (role == null)
+                    throw new RestException(HttpStatusCode.NotFound, new { role = "Could not find" });
 
-                _context.Remove(company);
+                _context.Remove(role);
 
                 var success = await _context.SaveChangesAsync() > 0;
                 if (success) return Unit.Value;

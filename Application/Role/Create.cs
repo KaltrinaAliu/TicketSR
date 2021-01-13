@@ -7,18 +7,16 @@ using FluentValidation;
 using MediatR;
 using Persistence;
 
-namespace Application.TicketTypes
+namespace Application.Role
 {
     public class Create
     {
          public class Command : IRequest
         {
-           [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-           public Guid Id { get; set; }
            public string Name { get; set; }
-           public DateTime CreatedDate { get; set; }
-           public DateTime UpdatedDate { get; set; }
-        //    
+           public string NormalizedName { get; set; }
+           public bool IsStatic { get; set; }
+ 
         }
 
         public class Handler : IRequestHandler<Command>
@@ -34,25 +32,26 @@ namespace Application.TicketTypes
                 public CommandValidator()
                 {
                     RuleFor(x=>x.Name).NotEmpty();
-
+                    RuleFor(x=>x.IsStatic).NotEmpty();
+                    RuleFor(x=>x.NormalizedName).NotEmpty();
                 }
             }
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-               var ticketTypes=new TicketType
+               var role=new AppRole
                {
-                    Id=request.Id,
                     Name=request.Name,
-                    CreatedDate=request.CreatedDate,
-                    UpdatedDate=request.UpdatedDate   
+                    NormalizedName=request.NormalizedName,
+                    IsStatic=request.IsStatic
                };
 
-               _context.TicketTypes.Add(ticketTypes);
+               _context.Roles.Add(role);
                var success=await _context.SaveChangesAsync()>0;
                if(success) return Unit.Value;
 
-               throw new Exception("Problem saving the data for the company");
+               throw new Exception("Problem saving the data for the role");
             }
+
         }
     }
 }
