@@ -6,7 +6,7 @@ using Application.Errors;
 using MediatR;
 using Persistence;
 
-namespace Application.TicketTypes
+namespace Application.TicketStatuses
 {
     public class Delete
     {
@@ -25,11 +25,11 @@ namespace Application.TicketTypes
             }
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                var ticketType = await _context.TicketTypes.FindAsync(request.Id);
-                if (ticketType == null)
-                    throw new RestException(HttpStatusCode.NotFound, new { ticketType = "Could not find" });
+                var ticketStatus = await _context.TicketStatuses.FindAsync(request.Id);
+                if (ticketStatus == null)
+                    throw new RestException(HttpStatusCode.NotFound, new { ticketStatus = "Could not find" });
 
-                _context.Remove(ticketType);
+                _context.Remove(ticketStatus);
 
                 var success = await _context.SaveChangesAsync() > 0;
                 if (success) return Unit.Value;

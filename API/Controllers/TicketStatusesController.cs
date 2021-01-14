@@ -1,23 +1,25 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Application.TicketTypes;
+using Application.TicketStatuses;
 using Domain;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    public class TicketTypesController:BaseController
+    [AllowAnonymous]
+    public class TicketStatusesController:BaseController
     {
         [HttpGet]
-        public async Task<ActionResult<List<TicketType>>> List()
+        public async Task<ActionResult<List<TicketStatus>>> List()
         {
             return await Mediator.Send(new List.Query());
         }   
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<TicketType>> Details(Guid id)
+        public async Task<ActionResult<TicketStatus>> Details(Guid id)
         {
             return await Mediator.Send(new Details.Query{Id=id});
         }

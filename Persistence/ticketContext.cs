@@ -12,7 +12,18 @@ namespace Persistence
         public DbSet<Value> Values { get; set; }
         public DbSet<Company> Companies  { get; set; }
         public DbSet<TicketType> TicketTypes  { get; set; }
-
+        public DbSet<TicketPriority> TicketPriorities { get; set; }
+        public DbSet<TicketStatus> TicketStatuses  { get; set; }
+        public DbSet<Ticket> Tickets  { get; set; }
+        public DbSet<Report> Reports  { get; set; }
+        public DbSet<Tag> Tags  { get; set; }
+        public DbSet<History> Histories  { get; set; }
+        public DbSet<Attachment> Attachments { get; set; }
+        public DbSet<Comment> Comments  { get; set; }
+        public DbSet<Note> Notes  { get; set; }
+        public DbSet<Team> Teams { get; set; }
+        public DbSet<Department> Departments  { get; set; }
+        public DbSet<Notification> Notifications  { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder){
             base.OnModelCreating(builder);

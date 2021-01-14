@@ -6,13 +6,13 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.TicketTypes
+namespace Application.TicketStatuses
 {
     public class List
     {
-        public class Query : IRequest<List<TicketType>> { }
+        public class Query : IRequest<List<TicketStatus>> { }
 
-        public class Handler : IRequestHandler<Query, List<TicketType>>
+        public class Handler : IRequestHandler<Query, List<TicketStatus>>
         {
             private readonly ticketContext _context;
             public Handler(ticketContext context)
@@ -20,10 +20,10 @@ namespace Application.TicketTypes
                 _context = context;
 
             }
-            public async Task<List<TicketType>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<TicketStatus>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var ticketTypes= await _context.TicketTypes.ToListAsync();
-                return ticketTypes;
+                var ticketStatus= await _context.TicketStatuses.ToListAsync();
+                return ticketStatus;
             }
         }
     }
