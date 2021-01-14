@@ -34,7 +34,6 @@ namespace Application.Role
                 public CommandValidator()
                 {
                     RuleFor(x=>x.Name).NotEmpty();
-                    RuleFor(x=>x.IsStatic).NotEmpty();
                     RuleFor(x=>x.NormalizedName).NotEmpty();
                 }
             }

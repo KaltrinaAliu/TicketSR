@@ -28,6 +28,8 @@ namespace Application.Role
                 var role = await _context.Roles.FindAsync(request.Id);
                 if (role == null)
                     throw new RestException(HttpStatusCode.NotFound, new { role = "Could not find" });
+                if (role.IsStatic==true)
+                    throw new RestException(HttpStatusCode.NotFound, new { role = "Could not delete a static role" });
 
                 _context.Remove(role);
 
