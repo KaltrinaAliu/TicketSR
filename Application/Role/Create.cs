@@ -1,10 +1,12 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Domain;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Role
@@ -42,7 +44,7 @@ namespace Application.Role
                {
                     Name=request.Name,
                     NormalizedName=request.NormalizedName,
-                    IsStatic=request.IsStatic
+                    IsStatic=request.IsStatic,
                };
 
                _context.Roles.Add(role);

@@ -17,7 +17,6 @@ namespace API.Controllers
             return await Mediator.Send(new List.Query());
         }
         [HttpGet("{id}")]
-        [Authorize]
         public async Task<ActionResult<AppRole>> Details(string id)
         {
             return await Mediator.Send(new Details.Query{Id=id});
