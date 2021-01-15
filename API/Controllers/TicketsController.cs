@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    public class TicketsControllers:BaseController
+    public class TicketsController:BaseController
     {
         [HttpGet]
         public async Task<ActionResult<List<Ticket>>> List()
