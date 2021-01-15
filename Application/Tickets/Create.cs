@@ -11,7 +11,7 @@ namespace Application.Tickets
 {
     public class Create
     {
-           public class Command : IRequest
+        public class Command : IRequest
         {
            [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
          public Guid Id { get; set; }

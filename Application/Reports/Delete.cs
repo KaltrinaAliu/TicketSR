@@ -6,7 +6,7 @@ using Application.Errors;
 using MediatR;
 using Persistence;
 
-namespace Application.Tags
+namespace Application.Reports
 {
     public class Reports
     {
