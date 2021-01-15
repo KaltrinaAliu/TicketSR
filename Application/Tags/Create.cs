@@ -7,19 +7,18 @@ using FluentValidation;
 using MediatR;
 using Persistence;
 
-namespace Application.TicketPriorities
+namespace Application.Tags
 {
     public class Create
     {
            public class Command : IRequest
         {
            [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-           public Guid Id { get; set; }
-           public string Name { get; set; }
-           public string Color { get; set; }
-           public bool IsDefault { get; set; }
-           public DateTime CreatedDate { get; set; }
-           public DateTime UpdatedDate { get; set; }   
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Normalized { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
         }
 
         public class Handler : IRequestHandler<Command>
@@ -35,23 +34,22 @@ namespace Application.TicketPriorities
                 public CommandValidator()
                 {
                     RuleFor(x=>x.Name).NotEmpty();
-                    RuleFor(x=>x.Color).NotEmpty();
+                    RuleFor(x=>x.Normalized).NotEmpty();
 
                 }
             }
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-               var ticketPriority=new TicketPriority
+               var tag=new Tag
                {
                     Id=request.Id,
                     Name=request.Name,
-                    Color=request.Color,
-                    IsDefault=request.IsDefault,
+                    Normalized=request.Normalized,
                     CreatedDate=request.CreatedDate,
                     UpdatedDate=request.UpdatedDate   
                };
 
-               _context.TicketPriorities.Add(ticketPriority);
+               _context.Tags.Add(tag);
                var success=await _context.SaveChangesAsync()>0;
                if(success) return Unit.Value;
 

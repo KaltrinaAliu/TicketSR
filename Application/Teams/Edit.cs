@@ -7,7 +7,7 @@ using FluentValidation;
 using MediatR;
 using Persistence;
 
-namespace Application.TicketPriorities
+namespace Application.Teams
 {
     public class Edit
     {
@@ -15,8 +15,6 @@ namespace Application.TicketPriorities
         {
            public Guid Id { get; set; }
            public string Name { get; set; }
-           public string Color { get; set; }
-           public bool IsDefault { get; set; }
            public DateTime CreatedDate { get; set; }
            public DateTime UpdatedDate { get; set; }
         }
@@ -34,21 +32,18 @@ namespace Application.TicketPriorities
                 public CommandValidator()
                 {
                     RuleFor(x=>x.Name).NotEmpty();
-                    RuleFor(x=>x.Color).NotEmpty();
 
                 }
             }
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                var ticketPriority = await _context.TicketPriorities.FindAsync(request.Id);
-                if(ticketPriority==null)
-                       throw new RestException(HttpStatusCode.NotFound,new {ticketPriority="Could not find"});
+                var team = await _context.Teams.FindAsync(request.Id);
+                if(team==null)
+                       throw new RestException(HttpStatusCode.NotFound,new {team="Could not find"});
                     
-                ticketPriority.Name=request.Name??ticketPriority.Name;
-                ticketPriority.IsDefault=request.IsDefault;
-                ticketPriority.Color=request.Color??ticketPriority.Color;
-                ticketPriority.CreatedDate=ticketPriority.CreatedDate;
-                ticketPriority.UpdatedDate=request.UpdatedDate;
+                team.Name=request.Name??team.Name;
+                team.CreatedDate=team.CreatedDate;
+                team.UpdatedDate=request.UpdatedDate;
 
 
                 var success=await _context.SaveChangesAsync()>0;

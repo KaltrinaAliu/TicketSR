@@ -36,7 +36,6 @@ namespace Application.TicketStatuses
                 {
                     RuleFor(x=>x.Name).NotEmpty();
                     RuleFor(x=>x.Color).NotEmpty();
-                    RuleFor(x=>x.IsDefault).NotEmpty();
 
                 }
             }

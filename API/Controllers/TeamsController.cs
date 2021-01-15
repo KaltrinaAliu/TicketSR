@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Application.TicketPriorities;
+using Application.Teams;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -10,16 +10,16 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [AllowAnonymous]
-    public class TicketPriorities:BaseController
+    public class TeamsController:BaseController
     {
         [HttpGet]
-        public async Task<ActionResult<List<TicketPriority>>> List()
+        public async Task<ActionResult<List<Team>>> List()
         {
             return await Mediator.Send(new List.Query());
         }   
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<TicketPriority>> Details(Guid id)
+        public async Task<ActionResult<Team>> Details(Guid id)
         {
             return await Mediator.Send(new Details.Query{Id=id});
         }
