@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Application.Tags;
+using Application.Departments;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -9,17 +9,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    public class TagsControllers:BaseController
+    public class DepartmentsController:BaseController
     {
           [HttpGet]
-        public async Task<ActionResult<List<Tag>>> List()
+        public async Task<ActionResult<List<Department>>> List()
         {
             return await Mediator.Send(new List.Query());
         }
 
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<ActionResult<Tag>> Details(Guid id)
+        public async Task<ActionResult<Department>> Details(Guid id)
         {
             return await Mediator.Send(new Details.Query{Id=id});
         }

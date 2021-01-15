@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    public class AttachmentsControllerr:BaseController
+    public class AttachmentsController:BaseController
     {
         [HttpGet]
         public async Task<ActionResult<List<Attachment>>> List()
@@ -25,7 +25,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Unit>> Create(Create.Command command)
+        public async Task<ActionResult<Unit>> Create([FromForm]Create.Command command)
         {
             return await Mediator.Send(command);
         }

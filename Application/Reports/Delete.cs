@@ -8,7 +8,7 @@ using Persistence;
 
 namespace Application.Reports
 {
-    public class Reports
+    public class Delete
     {
         public class Command : IRequest
         {

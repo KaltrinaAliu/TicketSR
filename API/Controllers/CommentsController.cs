@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Application.Departments;
+using Application.Comments;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -9,23 +9,23 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    public class DepartmentsControllers:BaseController
+    public class CommentsController:BaseController
     {
           [HttpGet]
-        public async Task<ActionResult<List<Department>>> List()
+        public async Task<ActionResult<List<Comment>>> List()
         {
             return await Mediator.Send(new List.Query());
         }
 
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<ActionResult<Department>> Details(Guid id)
+        public async Task<ActionResult<Comment>> Details(Guid id)
         {
             return await Mediator.Send(new Details.Query{Id=id});
         }
 
         [HttpPost]
-        public async Task<ActionResult<Unit>> Create(Create.Command command)
+        public async Task<ActionResult<Unit>> Create([FromForm]Create.Command command)
         {
             return await Mediator.Send(command);
         }
