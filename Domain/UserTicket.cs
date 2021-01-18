@@ -8,8 +8,8 @@ namespace Domain
         public string UserId { get; set; }
         public Guid TicketId { get; set; }
 
-        public AppUser User { get; set; }
-        public Ticket Ticket { get; set; }
+        public virtual AppUser User { get; set; }
+        public virtual Ticket Ticket { get; set; }
         public DateTime DateJoined { get; set; }
         public bool IsHost { get; set; }
     }

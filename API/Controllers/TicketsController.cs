@@ -32,6 +32,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy="IsTicketHost")]
         public async Task<ActionResult<Unit>> Edit(Guid id,[FromForm]Edit.Command command1) 
         {
             command1.Id=id;
@@ -39,9 +40,22 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy="IsTicketHost")]
         public async Task<ActionResult<Unit>> Delete(Guid id)
         {
             return await Mediator.Send(new Delete.Command{Id=id});
+        }
+
+        [HttpPost("{id}/assign")]
+        public async Task<ActionResult<Unit>> Assign (Guid id)
+        {
+            return await Mediator.Send(new Assign.Command{Id=id});
+        }
+
+        [HttpDelete("{id}/assign")]
+        public async Task<ActionResult<Unit>> Unassign (Guid id)
+        {
+            return await Mediator.Send(new Unassign.Command{Id=id});
         }
     }
 }

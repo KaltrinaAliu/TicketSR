@@ -30,7 +30,7 @@ namespace Application.Tickets
             }
             public async Task<TicketDto> Handle(Query request, CancellationToken cancellationToken)
             {
-                var ticket = await _context.Tickets.Include(x => x.UserTickets).ThenInclude(x => x.User).SingleOrDefaultAsync(x => x.Id == request.Id);
+                var ticket = await _context.Tickets.FindAsync(request.Id);
                 if (ticket == null)
                     throw new RestException(HttpStatusCode.NotFound, new { ticket = "Could not find" });
                 var ticketToReturn=_mapper.Map<Ticket,TicketDto>(ticket);

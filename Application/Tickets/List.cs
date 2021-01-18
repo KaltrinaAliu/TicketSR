@@ -25,7 +25,7 @@ namespace Application.Tickets
             }
             public async Task<List<TicketDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var ticket = await _context.Tickets.Include(x => x.UserTickets).ThenInclude(x => x.User).ToListAsync();
+                var ticket = await _context.Tickets.ToListAsync();
                 return _mapper.Map<List<Ticket>,List<TicketDto>>(ticket);
             }
         }

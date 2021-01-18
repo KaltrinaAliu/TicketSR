@@ -35,6 +35,7 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ticketContext>(opt=>{
+                opt.UseLazyLoadingProxies();
                 opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
             services.AddControllers(opt=>{
@@ -63,6 +64,15 @@ namespace API
             services.AddScoped<IJwtGenerator,JwtGenerator>();
             services.AddScoped<IUserAccessor,UserAccessor>();
 
+            services.AddAuthorization(opt=>
+            {
+                opt.AddPolicy("IsTicketHost", policy=>
+                {
+                    policy.Requirements.Add( new IsHostRequirement());
+                });
+            });
+            services.AddTransient<IAuthorizationHandler,IsHostRequirementHandler>();
+            
             var key=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"]));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(Opt=>
             {
