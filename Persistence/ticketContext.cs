@@ -25,6 +25,8 @@ namespace Persistence
         public DbSet<Department> Departments  { get; set; }
         public DbSet<Notification> Notifications  { get; set; }
 
+        public DbSet<UserTicket> UserTickets  { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder){
             base.OnModelCreating(builder);
             builder.Entity<Value>()
@@ -33,6 +35,10 @@ namespace Persistence
                 new Value{Id=2, Name="102"},
                 new Value{Id=3, Name="101"}
             );
+
+            builder.Entity<UserTicket>(x=>x.HasKey(ua=>new {ua.UserId,ua.TicketId}));
+            builder.Entity<UserTicket>().HasOne(u=>u.User).WithMany(t=>t.UserTickets).HasForeignKey(u=>u.UserId);
+            builder.Entity<UserTicket>().HasOne(t=>t.Ticket).WithMany(u=>u.UserTickets).HasForeignKey(t=>t.TicketId);
         }
     }
 }

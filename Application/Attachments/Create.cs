@@ -11,16 +11,14 @@ namespace Application.Attachments
 {
     public class Create
     {
-           public class Command : IRequest
+       public class Command : IRequest
         {
            [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
          public Guid Id { get; set; }
-        public string Subject { get; set; }
-        public string Issue { get; set; }
-        public bool IsDeleted { get; set; }
+        public string Name { get; set; }
+        public string Path { get; set; }
+        public string Type { get; set; }
         public DateTime CreatedDate { get; set; }
-        public DateTime? ClosedDate { get; set; }
-        public DateTime? DueDate { get; set; }
         public DateTime UpdatedDate { get; set; }
         }
 
@@ -36,25 +34,25 @@ namespace Application.Attachments
             {
                 public CommandValidator()
                 {
-                    RuleFor(x=>x.Subject).NotEmpty();
-                    RuleFor(x=>x.Issue).NotEmpty();
+                    RuleFor(x=>x.Name).NotEmpty();
+                    RuleFor(x=>x.Path).NotEmpty();
+                    RuleFor(x=>x.Type).NotEmpty();
+
                 }
             }
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-               var ticket=new Ticket
+               var attachment=new Attachment
                {
                     Id=request.Id,
-                    Subject=request.Subject,
-                    Issue=request.Issue,
-                    IsDeleted=request.IsDeleted,
-                    DueDate=request.DueDate,
-                    ClosedDate=request.ClosedDate,
+                    Name=request.Name,
+                    Path=request.Path,
+                    Type=request.Type,
                     CreatedDate=request.CreatedDate,
                     UpdatedDate=request.UpdatedDate   
                };
 
-               _context.Tickets.Add(ticket);
+               _context.Attachments.Add(attachment);
                var success=await _context.SaveChangesAsync()>0;
                if(success) return Unit.Value;
 

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.Errors;
 using Domain;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Tickets
@@ -26,7 +27,7 @@ namespace Application.Tickets
             }
             public async Task<Ticket> Handle(Query request, CancellationToken cancellationToken)
             {
-                var ticket = await _context.Tickets.FindAsync(request.Id);
+                var ticket = await _context.Tickets.Include(x=>x.UserTickets).ThenInclude(x=>x.User).SingleOrDefaultAsync(x=>x.Id==request.Id);
                 if (ticket == null)
                     throw new RestException(HttpStatusCode.NotFound, new {ticket = "Could not find" });
                 return ticket;

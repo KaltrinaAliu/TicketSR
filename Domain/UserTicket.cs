@@ -8,7 +8,9 @@ namespace Domain
         public string UserId { get; set; }
         public Guid TicketId { get; set; }
 
-        public virtual ICollection<AppUser> User { get; set; }
-        public virtual ICollection<Ticket> Ticket { get; set; }
+        public AppUser User { get; set; }
+        public Ticket Ticket { get; set; }
+        public DateTime DateJoined { get; set; }
+        public bool IsHost { get; set; }
     }
 }

@@ -22,7 +22,7 @@ namespace Application.Tickets
             }
             public async Task<List<Ticket>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var ticket= await _context.Tickets.ToListAsync();
+                var ticket= await _context.Tickets.Include(x=>x.UserTickets).ThenInclude(x=>x.User).ToListAsync();
                 return ticket;
             }
         }
