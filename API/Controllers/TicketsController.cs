@@ -13,14 +13,14 @@ namespace API.Controllers
     public class TicketsController:BaseController
     {
         [HttpGet]
-        public async Task<ActionResult<List<Ticket>>> List()
+        public async Task<ActionResult<List<TicketDto>>> List()
         {
             return await Mediator.Send(new List.Query());
         }
 
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<ActionResult<Ticket>> Details(Guid id)
+        public async Task<ActionResult<TicketDto>> Details(Guid id)
         {
             return await Mediator.Send(new Details.Query{Id=id});
         }

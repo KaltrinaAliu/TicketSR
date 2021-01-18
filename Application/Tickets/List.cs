@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -10,20 +11,22 @@ namespace Application.Tickets
 {
     public class List
     {
-        public class Query : IRequest<List<Ticket>> { }
+        public class Query : IRequest<List<TicketDto>> { }
 
-        public class Handler : IRequestHandler<Query, List<Ticket>>
+        public class Handler : IRequestHandler<Query, List<TicketDto>>
         {
             private readonly ticketContext _context;
-            public Handler(ticketContext context)
+            private readonly IMapper _mapper;
+            public Handler(ticketContext context, IMapper mapper)
             {
+                _mapper = mapper;
                 _context = context;
 
             }
-            public async Task<List<Ticket>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<TicketDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var ticket= await _context.Tickets.Include(x=>x.UserTickets).ThenInclude(x=>x.User).ToListAsync();
-                return ticket;
+                var ticket = await _context.Tickets.Include(x => x.UserTickets).ThenInclude(x => x.User).ToListAsync();
+                return _mapper.Map<List<Ticket>,List<TicketDto>>(ticket);
             }
         }
     }
